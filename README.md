@@ -42,7 +42,24 @@ REPOSITORY                           TAG             IMAGE ID       CREATED     
 dhanifudin/hello-app                 v1              a9261c9d7ed0   3 hours ago     26.8MB
 ```
 
-### Running container locally
+### Running Container Locally (optional)
+
+- Test container image using docker engine.
+  Open new terminal then run following command.
+
+```bash
+docker run --rm -p 8080:8080 <username>/hello-app:v1
+```
+
+- Open new terminal and run the following command to verify the container works
+  and give response with `Hello, World!`.
+
+```bash
+curl http://localhost:8080
+```
+
+- After you've seen successful response, you can stop the container
+by pressing `Ctrl+C` in the terminal where the `docker run` command is running.
 
 ### Push Docker Image into Registry
 
