@@ -409,7 +409,7 @@ deploy mode Pods.
   ```
   NAME         REFERENCE               TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
   php-apache   Deployment/php-apache   0%/50%    1         5         1          102s
-  php-apache   Deployment/php-apache   120%/50%   1         5         1          106s
+  php-apache   Deployment/php-apache   120%/50%  1         5         1          106s
   ```
 
 - Monitor the deployment of Pods, the number of replicaset will increased.
