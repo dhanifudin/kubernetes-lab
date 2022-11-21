@@ -3,12 +3,15 @@
 ## Requirements
 
 - Docker
-- Minikube
+- Minikube ([Installation Guide](./minikube-install.md))
 - [Docker hub account](https://hub.docker.com/)
 
 ## Preparations
 
-Clone kubernetes-lab using git
+Clone kubernetes-lab using git.
+
+> **Note**: If `git` command is not available, please run `sudo yum install
+> git`.
 
 ```bash
 git clone https://github.com/dhanifudin/kubernetes-lab
@@ -113,16 +116,20 @@ holding one or more containers. Usually, you deploy pods as a set of replicas
 that can be scaled. One way to deploy a set of replicas is through a Kubernetes
 deployment.
 
-- Ensure kubectl can access Kubernetes cluster by using following command.
+<!-- - Ensure kubectl can access Kubernetes cluster by using following command. -->
+
+<!--   ```bash -->
+<!--   kubectl get nodes -->
+<!--   ``` -->
+
+<!--   > If there are no problems, you should get name of your cluster. It should -->
+<!--   > list `minikube` (depends on your local Kubernetes). -->
+
+- Deploy application using Kubernetes deployment using following command. We
+  need to specify the deployment name and image name.
 
   ```bash
-  kubectl get nodes
-  ```
-
-  > If there are no problems, you should get name of your cluster. It should
-  > list `minikube` (depends on your local Kubernetes).
-
-  ```bash
+  # hello-app is deployment name, to set image we need to specify using flag --image
   kubectl create deployment hello-app --image=<username>/hello-app:v1
   ```
 - Monitor the deployment using following command.
@@ -215,29 +222,42 @@ outside cluster.
   kubectl get services
   ```
 
-  > **Note**: Unfortunately LoadBalancer doesn't support for local Kubernetes,
-  > the EXTERNAL-IP will be in `<pending>` state. Please try expose LoadBalancer
-  > service using cloud provider (GKE or EKS).
+- The `EXTERNAL-IP` will be in `<pending>` state. Please run tunneling command
+  that provided by minikube in new terminal session. The `<pending>`
+  state will be replaced by `<EXTERNAL-IP>`.
 
-- We can expose service for local Kubernetes using ClusterIP and port forward
-  combination, try run following command.
-
-  ```bash
-  # Long version command
-  # kubectl expose deployment hello-app --name=hello-app --type=ClusterIP --port 80 --target-port 8080
-  # Or
-  # Short command. We don't need to specify type, because ClusterIP is default.
-  kubectl expose deployment hello-app --port 80 --target-port 8080
-  # Please run using sudo, to port forward web http 80
-  sudo kubectl port-forward svc/hello-app 80:80
-  ```
-
-- Test application using curl command. Repeat the command multiple time, you
-  will get different Hostname.
+  > **Note**: This step doesn't required if we use Kubernetes cluster from cloud
+  > provider (GKE, EKS or similar services).
 
   ```bash
-  curl http://localhost
+  minikube tunnel
   ```
+
+  <!-- > **Note**: Unfortunately LoadBalancer doesn't support for local Kubernetes, -->
+  <!-- > the EXTERNAL-IP will be in `<pending>` state. Please try expose LoadBalancer -->
+  <!-- > service using cloud provider (GKE or EKS). -->
+
+<!-- - We can expose service for local Kubernetes using ClusterIP and port forward -->
+<!--   combination, try run following command. -->
+
+<!--   ```bash -->
+<!--   # Long version command -->
+<!--   # kubectl expose deployment hello-app --name=hello-app --type=ClusterIP --port 80 --target-port 8080 -->
+<!--   # Or -->
+<!--   # Short command. We don't need to specify type, because ClusterIP is default. -->
+<!--   kubectl expose deployment hello-app --port 80 --target-port 8080 -->
+<!--   # Please run using sudo, to port forward web http 80 -->
+<!--   sudo kubectl port-forward svc/hello-app 80:80 -->
+<!--   ``` -->
+
+- Open new terminal session. Test application using curl command. Repeat the
+  command multiple time, you will get different Hostname.
+
+  ```bash
+  curl http://<EXTERNAL-IP>
+  ```
+
+  > **Note**: replace `<EXTERNAL-IP>` with your exposed service IP.
 
   Output
   ```
@@ -306,7 +326,7 @@ outside cluster.
   Hostname: hello-app-758d65484d-xx54z
   ```
 
-### Clean Up
+### Clean Up Deployment
 
 - Delete Kubernetes service
 
@@ -437,6 +457,20 @@ deploy mode Pods.
   kubectl delete svc php-apache
   kubectl delete deployment php-apache
   ```
+
+### Stop or Cleanup Minikube
+
+If you want to halt your cluster, please run following command.
+
+```bash
+minikube stop
+```
+
+Delete all of the minikube clusters
+
+```bash
+minikube delete --all
+```
 
 ### References
 
