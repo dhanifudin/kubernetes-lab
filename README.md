@@ -175,7 +175,7 @@ following command.
   ```
 
 - The Pod with name `hello-app-7464b66999-xs86r` will be Terminated and replace
-  with new Pod.
+  with new Pod. This automated recovery is often referred to as self-healing.
 
 - Scale down from 3 replica into 2 replica
 
