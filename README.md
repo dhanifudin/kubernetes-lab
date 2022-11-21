@@ -405,15 +405,34 @@ deploy mode Pods.
   kubectl get hpa php-apache --watch
   ```
 
+  Output
+  ```
+  NAME         REFERENCE               TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+  php-apache   Deployment/php-apache   0%/50%    1         5         1          102s
+  php-apache   Deployment/php-apache   120%/50%   1         5         1          106s
+  ```
+
 - Monitor the deployment of Pods, the number of replicaset will increased.
 
   ```bash
   watch kubectl get pods
   ```
+  Output
+
+  ```
+  NAME                          READY   STATUS    RESTARTS   AGE
+  php-apache-698db99f59-8dkv7   1/1     Running   0          3m2s
+  load-generator                1/1     Running   0          67s
+  php-apache-698db99f59-gr46x   1/1     Running   0          39s
+  php-apache-698db99f59-s8skx   1/1     Running   0          39s
+  php-apache-698db99f59-zhz9g   1/1     Running   0          24s
+  php-apache-698db99f59-jmb5s   1/1     Running   0          24s
+  ```
 
 - Cleanup the deployment
 
   ```bash
+  kubectl delete pod load-generator
   kubectl delete hpa php-apache
   kubectl delete svc php-apache
   kubectl delete deployment php-apache
