@@ -2,9 +2,9 @@
 
 ## Requirements
 
-- Docker
 - Minikube ([Installation Guide](./guides/minikube-install.md))
 - [Docker hub account](https://hub.docker.com/)
+- SSH Client (optionally). Please check [Enable SSH Access Guide into VM].
 
 ## Preparations
 
