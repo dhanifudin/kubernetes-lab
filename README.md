@@ -382,7 +382,7 @@ deploy mode Pods.
 
 - Create the HorizontalPodAutoscaler using following command. The number of
   replica will be increased or decreased based on CPU utilization all Pods 50%.
-  horizontalPodAutoscaler will maintains Pods between 1 and 10 replicas.
+  horizontalPodAutoscaler will maintains Pods between 1 and 5 replicas.
 
   ```bash
   kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=5
