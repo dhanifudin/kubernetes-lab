@@ -320,11 +320,104 @@ outside cluster.
   kubectl delete deployment hello-app
   ```
 
-<!-- ### Deploy AutoScale HorizontalPodAutoscaling -->
+### Autoscale Automatically
 
-<!--   ```bash -->
-<!--   kubectl autoscale deployment hello-app --cpu-percent=60 --min=1 --max=5 -->
-<!--   ``` -->
+In Kubernetes, horizontalPodAutoscaler automatically updates a workload
+resource. Horizontal scaling means that the response to increased load is to
+deploy mode Pods.
+
+- Copy the configuration below, then save into `deployment.yaml`
+
+  ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: php-apache
+  spec:
+    selector:
+      matchLabels:
+        run: php-apache
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          run: php-apache
+      spec:
+        containers:
+        - name: php-apache
+          image: registry.k8s.io/hpa-example
+          ports:
+          - containerPort: 80
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
+  ---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: php-apache
+    labels:
+      run: php-apache
+  spec:
+    ports:
+    - port: 80
+    selector:
+      run: php-apache
+  ```
+
+- Apply deployment using following command.
+
+  ```bash
+  kubectl apply -f deployment.yaml
+  ```
+- Kubernetes deployment can be configured using command or yaml configuration.
+
+- Create the HorizontalPodAutoscaler using following command. The number of
+  replica will be increased or decreased based on CPU utilization all Pods 50%.
+  horizontalPodAutoscaler will maintains Pods between 1 and 10 replicas.
+
+  ```bash
+  kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=5
+  ```
+
+- Check the current status HorizontalPodAutoscaler using following command.
+
+  ```bash
+  # We can use hpa or horizontalpodautoscaler
+  # kubectl get horizontalpodautoscaler
+  kubectl get hpa
+  ```
+
+- Increase the load
+
+  ```bash
+  # Run this in a separate terminal
+  # so that the load generation continues and you can carry on with the rest of the steps
+  kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+  ```
+
+- Watch the load of HorizontalPodAutoscaler
+
+  ```bash
+  # type Ctrl+C to end the watch when you're ready
+  kubectl get hpa php-apache --watch
+  ```
+
+- Monitor the deployment of Pods, the number of replicaset will increased.
+
+  ```bash
+  watch kubectl get pods
+  ```
+
+- Cleanup the deployment
+
+  ```bash
+  kubectl delete hpa php-apache
+  kubectl delete svc php-apache
+  kubectl delete deployment php-apache
+  ```
 
 ### References
 
