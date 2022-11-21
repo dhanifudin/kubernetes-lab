@@ -126,7 +126,7 @@ deployment.
 <!--   > list `minikube` (depends on your local Kubernetes). -->
 
 - Deploy application using Kubernetes deployment using following command. We
-  need to specify the deployment name and image name.
+  need to specify the deployment and image name.
 
   ```bash
   # hello-app is deployment name, to set image we need to specify using flag --image
@@ -181,7 +181,7 @@ following command.
   kubectl delete pod hello-app-7464b66999-xs86r
   ```
 
-- The Pod with name `hello-app-7464b66999-xs86r` will be Terminated and replace
+- The Pod with name `hello-app-7464b66999-xs86r` will be terminated and replaced
   with new Pod. This automated recovery is often referred to as self-healing.
 
 - Scale down from 3 replica into 2 replica
@@ -232,23 +232,6 @@ outside cluster.
   ```bash
   minikube tunnel
   ```
-
-  <!-- > **Note**: Unfortunately LoadBalancer doesn't support for local Kubernetes, -->
-  <!-- > the EXTERNAL-IP will be in `<pending>` state. Please try expose LoadBalancer -->
-  <!-- > service using cloud provider (GKE or EKS). -->
-
-<!-- - We can expose service for local Kubernetes using ClusterIP and port forward -->
-<!--   combination, try run following command. -->
-
-<!--   ```bash -->
-<!--   # Long version command -->
-<!--   # kubectl expose deployment hello-app --name=hello-app --type=ClusterIP --port 80 --target-port 8080 -->
-<!--   # Or -->
-<!--   # Short command. We don't need to specify type, because ClusterIP is default. -->
-<!--   kubectl expose deployment hello-app --port 80 --target-port 8080 -->
-<!--   # Please run using sudo, to port forward web http 80 -->
-<!--   sudo kubectl port-forward svc/hello-app 80:80 -->
-<!--   ``` -->
 
 - Open new terminal session. Test application using curl command. Repeat the
   command multiple time, you will get different Hostname.
@@ -417,6 +400,9 @@ deploy mode Pods.
   # so that the load generation continues and you can carry on with the rest of the steps
   kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
   ```
+
+  > **Note**: We don't need to expose application, because load testing running
+  > inside the clusters.
 
 - Watch the load of HorizontalPodAutoscaler
 
