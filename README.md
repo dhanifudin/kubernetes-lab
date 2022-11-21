@@ -63,6 +63,34 @@ by pressing `Ctrl+C` in the terminal where the `docker run` command is running.
 
 ### Push Docker Image into Registry
 
+Docker Hub is the world's largest library and community for container images.
+
+- Authenticate into docker registry using the following command.
+
+```bash
+docker login
+```
+
+```bash
+# Output
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username:
+```
+
+- Fill your username and password then wait until `Login Succeeded` message
+
+```
+Login Succeeded
+```
+
+- Push local docker image into docker registry using following command.
+
+```bash
+# Format <username>/<repo-name>:<tag-name>
+# Don't forget to replace <username> with your docker hub account
+docker push <username>/hello-app:v1
+```
+
 ### Deploying Sample App into Kubernetes
 
 ### Scale App
