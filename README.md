@@ -16,13 +16,16 @@ Clone kubernetes-lab using git.
 ```bash
 git clone https://github.com/dhanifudin/kubernetes-lab
 ```
-or download using curl command
+or download using `curl` command
 
 ```bash
 curl -L https://github.com/dhanifudin/kubernetes-lab/archive/refs/heads/main.zip -o
 kubernetes-lab.zip
 unzip kubernetes-lab.zip
 ```
+
+> **Note**: If you use download using `curl`, the directory will have name
+> `kubernetes-lab-main`
 
 ## Instructions
 
