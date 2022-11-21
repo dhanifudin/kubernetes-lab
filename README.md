@@ -8,10 +8,17 @@
 
 ## Preparations
 
-Clone kubernetes-lab
+Clone kubernetes-lab using git
 
 ```bash
 git clone https://github.com/dhanifudin/kubernetes-lab
+```
+or download using curl command
+
+```bash
+curl -L https://github.com/dhanifudin/kubernetes-lab/archive/refs/heads/main.zip -o
+kubernetes-lab.zip
+unzip kubernetes-lab.zip
 ```
 
 ## Instructions
@@ -141,4 +148,39 @@ Docker Hub is the world's largest library and community for container images.
 
 ### Update Application
 
+  ```bash
+  watch kubectl get pods
+  ```
+  ```
+  NAME                         READY   STATUS    RESTARTS   AGE
+  hello-app-7464b66999-q5hsk   1/1     Running   0          3h14m
+  ```
+
+  ```bash
+  kubectl set image deployment/hello-app hello-app=<username>/hello-app:v2
+  ```
+
+  ```
+  NAME                         READY   STATUS              RESTARTS   AGE
+  hello-app-7464b66999-q5hsk   1/1     Running             0          3h15m
+  hello-app-758d65484d-xx54z   0/1     ContainerCreating   0          8s
+  ```
+
+  ```
+  NAME                         READY   STATUS    RESTARTS   AGE
+  hello-app-758d65484d-xx54z   1/1     Running   0          3m22s
+  ```
+
 ### Clean Up
+
+  ```
+  kubectl delete service hello-app-lb
+  ```
+
+  ```
+  kubectl delete deployment hello-app
+  ```
+
+### References
+
+- [Kubernetes Tutorial](https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app)
