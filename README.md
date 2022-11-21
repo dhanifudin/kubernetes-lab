@@ -116,11 +116,11 @@ deployment.
 - Ensure kubectl can access Kubernetes cluster by using following command.
 
   ```bash
-  kubectl get pods
+  kubectl get nodes
   ```
 
-  > If there are no problems, you should get message `No resources found in
-  > default namespace.` or list available of pods in default namespace.
+  > If there are no problems, you should get name of your cluster. It should
+  > list `minikube` (depends on your local Kubernetes).
 
   ```bash
   kubectl create deployment hello-app --image=<username>/hello-app:v1
