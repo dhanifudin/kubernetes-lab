@@ -216,7 +216,7 @@ outside cluster.
   ```
 
   > **Note**: Unfortunately LoadBalancer doesn't support for local Kubernetes,
-  > the EXTERNAL-IP will be in state <pending>. Please try expose LoadBalancer
+  > the EXTERNAL-IP will be in `<pending>` state. Please try expose LoadBalancer
   > service using cloud provider (GKE or EKS).
 
 - We can expose service for local Kubernetes using ClusterIP and port forward
