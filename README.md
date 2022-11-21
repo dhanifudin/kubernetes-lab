@@ -28,15 +28,15 @@ unzip kubernetes-lab.zip
 - Navigate into `hello-app` directory from `kubernetes-lab` repository.
 - Build sample application using following command.
 
-```bash
-docker build -t <username>/hello-app:v1 .
-```
-> Please update `<username>` value with your Docker hub account.
-> For example:
->
-> ```bash
-> docker build -t dhanifudin/hello-app:v1 .
-> ```
+  ```bash
+  docker build -t <username>/hello-app:v1 .
+  ```
+  > Please update `<username>` value with your Docker hub account.
+  > For example:
+  >
+  > ```bash
+  > docker build -t dhanifudin/hello-app:v1 .
+  > ```
 
 - Run the `docker images` command to verify the build was successful.
 
@@ -49,7 +49,7 @@ docker build -t <username>/hello-app:v1 .
   > dhanifudin/hello-app                 v1              a9261c9d7ed0   3 hours ago     26.8MB
   > ```
 
-### Running Container Locally (optional)
+### Running Container Locally
 
 - Test container image using docker engine.
   Open new terminal then run following command.
@@ -64,6 +64,14 @@ docker build -t <username>/hello-app:v1 .
   ```bash
   curl http://localhost:8080
   ```
+
+  > Output:
+  > ```
+  > $ curl http://localhost:8080
+  > Hello, world!
+  > Version: 1.0.0
+  > Hostname: cee0c8bc06f0
+  > ```
 
 - After you've seen successful response, you can stop the container
 by pressing `Ctrl+C` in the terminal where the `docker run` command is running.
@@ -84,7 +92,7 @@ Docker Hub is the world's largest library and community for container images.
   > Username:
   >```
 
-- Fill your username and password then wait until `Login Succeeded` message
+- Fill your username and password then wait until you get `Login Succeeded` message
 
   ```
   Login Succeeded
@@ -98,23 +106,42 @@ Docker Hub is the world's largest library and community for container images.
   docker push <username>/hello-app:v1
   ```
 
-### Deploying Sample App into Kubernetes
+### Deploying Application into Kubernetes
+
+Kubernetes represents applications as pods, which are scalable units
+holding one or more containers. Usually, you deploy pods as a set of replicas
+that can be scaled. One way to deploy a set of replicas is through a Kubernetes
+deployment.
+
+- Ensure kubectl can access Kubernetes cluster by using following command.
+
+  ```bash
+  kubectl get pods
+  ```
+
+  > If there are no problems, you should get message `No resources found in
+  > default namespace.` or list available of pods in default namespace.
 
   ```bash
   kubectl create deployment hello-app --image=<username>/hello-app:v1
   ```
+- Monitor the deployment by using following command.
+
+  ```bash
+  kubectl get pods
+  ```
 
   Output
 
-  ```bash
-
+  ```
+  NAME                         READY   STATUS    RESTARTS   AGE
+  hello-app-7464b66999-zpjgr   1/1     Running   0          11s
   ```
 
-  > ### Tips
-  > We can monitor the pods using combination `kubectl` with `watch`.
-  > `watch kubectl get pods`.
+  > **Note**: We can monitor the pods using combination `kubectl` with `watch`
+  > to get update periodically. `watch kubectl get pods`.
 
-### Scale App
+### Scale Application Using Replica Set
 
   ```bash
   kubectl scale deployment hello-app --replicas=3
@@ -126,14 +153,26 @@ Docker Hub is the world's largest library and community for container images.
 
   Output:
 
+  ```
+  NAME                         READY   STATUS    RESTARTS   AGE
+  hello-app-7464b66999-zpjgr   1/1     Running   0          41m
+  hello-app-7464b66999-479nq   1/1     Running   0          6s
+  hello-app-7464b66999-xs86r   1/1     Running   0          6s
+
+  ```
+
   ```bash
   kubectl scale deployment hello-app --replicas=2
   ```
 
-### Deploy AutoScale Rule
-
   ```bash
-  kubectl autoscale deployment hello-app --cpu-percent=60 --min=1 --max=5
+  kubectl get pods
+  ```
+
+  ```
+  NAME                         READY   STATUS    RESTARTS   AGE
+  hello-app-7464b66999-zpjgr   1/1     Running   0          41m
+  hello-app-7464b66999-479nq   1/1     Running   0          6s
   ```
 
 ### Expose Application
@@ -181,6 +220,13 @@ Docker Hub is the world's largest library and community for container images.
   kubectl delete deployment hello-app
   ```
 
+### Deploy AutoScale HorizontalPodAutoscaling
+
+  ```bash
+  kubectl autoscale deployment hello-app --cpu-percent=60 --min=1 --max=5
+  ```
+
 ### References
 
 - [Kubernetes Tutorial](https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app)
+- [Horizontal Pod Autoscale Walkthrough](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)
