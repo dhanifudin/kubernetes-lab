@@ -3,7 +3,7 @@
 ## Requirements
 
 - Docker
-- Minikube ([Installation Guide](./minikube-install.md))
+- Minikube ([Installation Guide](./guides/minikube-install.md))
 - [Docker hub account](https://hub.docker.com/)
 
 ## Preparations
